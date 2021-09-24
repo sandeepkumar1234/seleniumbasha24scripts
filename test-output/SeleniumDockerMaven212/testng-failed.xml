@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [SeleniumDockerMaven212]" guice-stage="DEVELOPMENT" verbose="2">
+  <listeners>
+    <listener class-name="org.wtt.docker.listener.ExecutionListener"/>
+  </listeners>
+  <test name="SeleniumDocker(failed)">
+    <classes>
+      <class name="org.wtt.test.SeleniumDocker">
+        <methods>
+          <include name="VerifyTitle1"/>
+          <include name="setUp"/>
+          <include name="Login"/>
+          <include name="AlertPopup"/>
+          <include name="afterTest"/>
+          <include name="Logout"/>
+          <include name="setupBeforeSuite"/>
+          <include name="LaunchApplication1"/>
+          <include name="Login1"/>
+          <include name="AddCustomer"/>
+        </methods>
+      </class> <!-- org.wtt.test.SeleniumDocker -->
+      <class name="org.wtt.test.SampleConnectGrid">
+        <methods>
+          <include name="GoogleClickFeelingLucky"/>
+          <include name="AboutDoodle"/>
+          <include name="GmailLoginValidCred"/>
+          <include name="SearchGoogle"/>
+          <include name="SearchDoodle"/>
+        </methods>
+      </class> <!-- org.wtt.test.SampleConnectGrid -->
+    </classes>
+  </test> <!-- SeleniumDocker(failed) -->
+</suite> <!-- Failed suite [SeleniumDockerMaven212] -->
