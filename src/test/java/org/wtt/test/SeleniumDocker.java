@@ -39,8 +39,8 @@ public class SeleniumDocker{
 	public void setUp() throws MalformedURLException {
  		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 		capabilities.setPlatform(Platform.LINUX);
-		driver = new RemoteWebDriver(new URL("http://selenium.engazewell.com/wd/hub"), capabilities);
-  		System.out.println("driver loaded.................ra worst");
+		driver = new RemoteWebDriver(new URL(PropertiesUtility.properties.getProperty("environment.url")), capabilities);
+  		System.out.println("driver loaded.................ra ");
 		System.out.println(driver);
 	}
 	
