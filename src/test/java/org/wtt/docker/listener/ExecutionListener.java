@@ -5,21 +5,21 @@ import java.time.LocalDateTime;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-
-import com.gargoylesoftware.htmlunit.WebConsole.Logger;
-
+import java.time.format.DateTimeFormatter;
 
 public class ExecutionListener implements ITestListener {
 	
 	private TestStatus testStatus;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
-	private Long sTime;
-	private Long eTime;
+	private String startTime;
+	private long stime;
+	private long etime;
+	private String endTime;
+	private   DateTimeFormatter dtf;
 	private String result;
 
 	public void onTestStart(ITestResult iTestResult) {
 		this.testStatus = new TestStatus();
+		dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	}
 
 	public void onTestSuccess(ITestResult iTestResult) {
@@ -41,8 +41,9 @@ public class ExecutionListener implements ITestListener {
 	}
 
 	public void onStart(ITestContext iTestContext) {
-		sTime = System.currentTimeMillis();
-
+		 LocalDateTime now = LocalDateTime.now();
+		 stime = System.currentTimeMillis();
+		 startTime = dtf.format(now);
 	}
 
 	public void onFinish(ITestContext iTestContext) {
@@ -56,14 +57,16 @@ public class ExecutionListener implements ITestListener {
 	}
 
 	private void sendStatus(ITestResult iTestResult, String status) {
-		eTime = System.currentTimeMillis();
+		 LocalDateTime now = LocalDateTime.now();
+		 endTime = dtf.format(now);
+		 etime = System.currentTimeMillis();
 		this.testStatus.setTestClass(iTestResult.getTestClass().getName());
 		this.testStatus.setDescription(iTestResult.getMethod().getDescription());
 		this.testStatus.setTestName(iTestResult.getMethod().getMethodName());
 		this.testStatus.setStatus(status);
-		this.testStatus.setExecutionDate(LocalDateTime.now().toString());
-		this.testStatus.setEndTime(eTime + "");
-		this.testStatus.setStartTime(sTime + "");
+		this.testStatus.setExecutionDate(dtf.format(LocalDateTime.now()));
+		this.testStatus.setEndTime(endTime);
+		this.testStatus.setStartTime(startTime);
 		if(status.equalsIgnoreCase("PASS")){
 			this.testStatus.setResult("PASS");
 
@@ -73,10 +76,9 @@ public class ExecutionListener implements ITestListener {
 			this.testStatus.setResult(iTestResult.getThrowable().getLocalizedMessage());
 		}
 		
-		long el = eTime - sTime;
-		this.testStatus.setDuration(el + "");
+		long el = etime - stime;
+		this.testStatus.setDuration((el/1000) + "s");
 		this.testStatus.setTestPlanId(PropertiesUtility.properties.getProperty("test.planId"));
-		this.testStatus.setTestPlanName(PropertiesUtility.properties.getProperty("test.planName"));
 		ResultSender.send(this.testStatus);
 	}
 
